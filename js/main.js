@@ -8,6 +8,8 @@ const productosTotal = document.getElementById("productosTotal");
 const precioTotal = document.getElementById("precioTotal");
 const tablaListaCompras = document.getElementById("tablaListaCompras");
 const cuerpoTabla = tablaListaCompras.getElementsByTagName("tbody").item(0);
+const btnClear = document.getElementById("btnClear");
+
 
 let cont = 0;
 let totalEnProductos = 0;
@@ -43,7 +45,7 @@ btnAgregar.addEventListener("click", function (event) {
 
     if (txtName.value.length < 3) {
         txtName.style.border = "solid medium red";
-        alertValidacionesTexto.innerHTML =
+        alertValidacionesTexto.innerHTML +=
             "<strong>El nombre del producto no es correcto></strong><br/>";
 
         alertValidaciones.style.display = "block";
@@ -66,12 +68,12 @@ btnAgregar.addEventListener("click", function (event) {
                         <td>${txtName.value}</td>
                         <td>${txtNumber.value}</td>
                         <td>${precio}</td>
-                    </tr<`;
+                    </tr>`;
 
         let elemento  = {
             "cont" : cont,
             "nombre" : txtName.value,
-            "cantidad" : txtNumber.value,
+            "cantidad" : Number(txtNumber.value),
             "precio" : precio
 
         };
@@ -100,6 +102,39 @@ btnAgregar.addEventListener("click", function (event) {
         txtName.focus();
     }//isValid
 }); //btnAgregar click
+
+// Crear un evento de limpiar todo
+
+btnClear.addEventListener("click", function(event){
+    event.preventDefault();
+
+    // Limpieza de campos
+    txtName.value = "";
+    txtNumber.value = "";
+
+    // Limpiar Alertas
+    alertValidacionesTexto.innerHTML = "";
+    alertValidaciones.style.display = "none";
+
+    //Limpiar bordes de los campos
+    txtName.style.border = "";
+    txtNumber.style.border = "";
+
+    //Limpiar la tabla de productos
+    cuerpoTabla.innerHTML = "";
+
+    //Limpiar tabla de resumen
+    contadorProductos.innerText = 0;
+    productosTotal.innerText = "0";
+    precioTotal.innerText = "$0.00";
+
+    // Limpieza localStorage
+    localStorage.removeItem("datos");
+    localStorage.removeItem("resumen");
+
+    //Enfoque en el primer campo
+    txtName.focus();
+});
 
 window.addEventListener("load", function (event){
     event.preventDefault();
